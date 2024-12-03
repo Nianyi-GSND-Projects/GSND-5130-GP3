@@ -1,4 +1,4 @@
-import { resultsDir, rootDir } from './common.mjs';
+import { resultsDir, analysisDir } from './common.mjs';
 import { Path, Fsp, Yaml, DirectoryExists, _f, _, Csv } from './utilities.mjs';
 
 const headers = [
@@ -47,7 +47,7 @@ async function Main() {
 	const rows = data.map(DatumToRow);
 	const table = [headers].concat(rows);
 
-	const csvOutputPath = Path.resolve(rootDir, 'data.csv');
+	const csvOutputPath = Path.resolve(analysisDir, 'formatted-data.csv');
 	const csvContent = await new Promise(res => Csv.stringify(table, (err, result) => res(result)));
 
 	await Fsp.writeFile(csvOutputPath, '\ufeff' + csvContent, { encoding: 'utf8' });
