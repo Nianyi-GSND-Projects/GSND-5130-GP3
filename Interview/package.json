@@ -1,6 +1,8 @@
 {
 	"type": "module",
 	"devDependencies": {
+		"csv": "^6.3.11",
+		"lodash": "^4.17.21",
 		"yaml": "^2.6.1"
 	}
 }

@@ -1,12 +1,13 @@
 force=false
 resultDir=results
 
-entry: extract convert
+entry:
+	@echo "No command given.";
 
-extract:
+extract-results:
 	node src/extract-results.mjs;
 
-convert:
+convert-to-wav:
 	cd $(resultDir);\
 	for webm in *.webm; do\
 		ffmpeg -i "$$webm" "$${webm%.webm}.wav" -vn -y;\
@@ -14,12 +15,8 @@ convert:
 		echo "$$webm converted.";\
 	done;
 
-clean:
-ifeq ($(force), true)
-	make fclean;
-else
-	@echo "Clean aborted. Please perform with \"force=true\".";
-endif
-
-fclean:
+clean-results:
 	rm $(resultDir)/* -f;
+
+generate-csv:
+	node src/generate-csv.mjs;
