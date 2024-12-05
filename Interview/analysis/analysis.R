@@ -29,7 +29,7 @@ accents |>
 
 # Focus only on vowel realization features.
 realizations <- data |>
-	subset(select = c(1, 6:nrow(data))) |>
+	subset(select = c(1, 6:ncol(data))) |>
 	group_by(culture) |>
 	summarise(across(everything(), sum, na.rm = TRUE))
 
