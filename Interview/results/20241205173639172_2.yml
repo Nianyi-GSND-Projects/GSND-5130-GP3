@@ -1,3 +1,9 @@
 name: Rana
-culture: Sinicized Hebrew
-transcription: ""
+culture: Hebrew
+transcription: "ɹwɑna"
+syllableCount: 2
+accent: null
+realization:
+  a:
+    - ɑ
+    - a

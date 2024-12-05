@@ -1,3 +1,10 @@
 name: Zebu
 culture: Spanish
-transcription: ""
+transcription: "zibu"
+syllableCount: 2
+accent: null
+realization:
+  e:
+    - i
+  u:
+    - u

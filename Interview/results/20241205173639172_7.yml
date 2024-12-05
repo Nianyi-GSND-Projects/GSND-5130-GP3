@@ -1,3 +1,11 @@
 name: Aoyama
 culture: Portuguese
-transcription: ""
+transcription: "a'jama"
+syllableCount: 3
+accent: 1
+realization:
+  a:
+    - a
+    - a
+  o:
+    - ∅
