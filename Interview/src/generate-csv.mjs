@@ -34,9 +34,7 @@ async function Main() {
 	}
 
 	PostProcessAccent();
-	_f.forEach(x => MergeCultures(x))([vowelTable, consonantTable]);
-	_f.forEach(x => TrimPhonemeTable(x))([vowelTable, consonantTable]);
-	_f.forEach(x => x.SortColumns(KeySort))([vowelTable, consonantTable]);
+	PostProcessPhonemes();
 
 	WriteCsvTable(accentTable, 'accent.csv');
 	WriteCsvTable(vowelTable, 'vowel.csv');
@@ -269,4 +267,40 @@ function TrimPhonemeTable(table, occurrenceThreshold = 2) {
 
 	for(const [, k] of lackingContrastPairs)
 		table.RemoveColumn(k);
+}
+
+function PostProcessPhonemes() {
+	for(const table of [vowelTable, consonantTable]) {
+		MergeCultures(table);
+		TrimPhonemeTable(table);
+		table.SortColumns(KeySort);
+
+		const keys = _f.pipe(
+			_f.map(_f.omit('culture')),
+			_f.map(_f.keys),
+			x => _f.unionBy(_f.id, ...x),
+			_f.map(x => x.split('_')),
+			_f.groupBy(x => x[0]),
+			_f.mapValues(_f.map(x => x[1]))
+		)(table.rows);
+
+		for(const row of table.rows) {
+			for(const [letters, phonemesList] of Object.entries(keys)) {
+				const sum = _f.pipe(
+					_f.entries,
+					_f.filter(([k]) => k.split('_')[0] === letters),
+					_f.map(x => x[1]),
+					_f.sum,
+				)(row);
+
+				if(sum === 0)
+					continue;
+				
+				for(const phonemes of phonemesList) {
+					const key = `${letters}_${phonemes}`;
+					row[key] = table.Get(key, row) / sum;
+				}
+			}
+		}
+	}
 }
