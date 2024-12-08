@@ -18,5 +18,8 @@ convert-to-wav:
 clean-results:
 	rm $(resultDir)/* -f;
 
+format-result:
+	node src/format-result.mjs;
+
 generate-csv:
 	node src/generate-csv.mjs;
