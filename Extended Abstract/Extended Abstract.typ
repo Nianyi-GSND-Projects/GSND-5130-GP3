@@ -266,6 +266,6 @@ RQ \#2 uses a between-subject design to compare pronunciation accuracy differenc
 ]
 
 #bibliography(
-	"./bibliography.bib",
+	"../bibliography.bib",
 	full: true
 );
