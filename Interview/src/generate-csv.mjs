@@ -298,7 +298,7 @@ function PostProcessPhonemes() {
 				
 				for(const phonemes of phonemesList) {
 					const key = `${letters}_${phonemes}`;
-					row[key] = table.Get(key, row) / sum;
+					row[key] = table.Get(key, row);
 				}
 			}
 		}
