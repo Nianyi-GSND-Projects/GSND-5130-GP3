@@ -10,14 +10,22 @@
 	);
 }
 
-#let phone = (body, strict: true) => {
+#let phone = (body, strict: true, brackets: true) => {
 	set text(font: "Consolas");
-	if(strict) {
-		text[\[#body\]];
-	}
-	else {
-		text[/#body/];
-	}
+	let (l, r) = (() => {
+		if(brackets == false) {
+			return ("", "");
+		}
+		else {
+			if(strict == true) {
+				return ("[", "]");
+			}
+			else {
+				return ("/", "/");
+			}
+		}
+	})();
+	text[#l#body#r];
 }
 
 #let ortho = (body) => {
@@ -102,7 +110,6 @@
 	This research reveals implicit biases at the intersection of visual perception and language use, contributing to a deeper understanding of cross-cultural communication.
 ]
 
-#columns(2)[
 = Introduction
 
 #[
@@ -244,14 +251,143 @@
 
 ]
 
-/* Results */
+= Results
 
-/* Discussion */
+We have done 3 rounds of interviews with random American citizens (N=23); 174 data samples were yielded.
+After inspecting and cleaning, 89 of them are effective; their strict phonological transcription were coded for later analysis.
 
-/* Limitation and Future Work */
+By writing and running automated data-processing scripts, we were able to extract data of three main aspects of the phonological features from the transcriptions: accent (i.e. the stressed syllables), realization of consonants and realization of vowels.
 
-/* Conclusion */
+#[
+	#show table: set block(breakable: true);
+	#set table(stroke: none);
+	#show table.cell.where(y: 0): it => {
+		if(it.body.text.contains("_") == false) {
+			set align(center);
+			text(it, weight: "bold");
+		}
+		else {
+			let (letters, phones) = it.body.text.split("_");
+			let header = [#letters #phone(phones)];
+			block(header, width: measure(header).width);
+		}
+	}
 
+	#let realizationTable = (src, caption: [], letterFilter: none) => {
+		let data = csv(src);
+		data.at(0).at(0) = "Culture";
+		if(letterFilter != none) {
+			let index = ();
+			index.push(0);
+			for i in range(1, data.at(0).len()) {
+				let (letters, phones) = data.at(0).at(i).split("_");
+				if(letterFilter.contains(letters)) {
+					index.push(i);
+				}
+			}
+			for i in range(0, data.len()) {
+				let row = data.at(i);
+				for j in range(row.len() - 1, -1, step: -1) {
+					if(index.contains(j) == false) {
+						let p = row.remove(j);
+					}
+				}
+				data.at(i) = row;
+			}
+		}
+		figure(
+			caption: caption,
+			table(
+				columns: data.at(0).len(),
+				column-gutter: 0.25em,
+				align: (left, center),
+
+				table.hline(stroke: 1pt),
+				..data.at(0),
+				table.hline(stroke: 0.5pt),
+				..data.slice(1).flatten(),
+				table.hline(stroke: 1pt),
+			)
+		)
+	}
+
+	== Accent
+
+	For the accent aspect, we counted the amount of name pronounciations with and without an accent for each culture, and the ratio between the amounts (@table:accent-count).
+
+	#figure(
+		caption: [The distribution of accented and unaccented name pronunciations by culture.],
+		table(
+			columns: 4,
+			align: (left, center, center, center),
+			table.hline(stroke: 1pt),
+			table.header[Culture][Accented Count][Unaccented Count][Accented Ratio],
+			table.hline(stroke: 0.5pt),
+			[Asia], [6], [16], [27.27%],
+			[Middle East], [9], [22], [29.03%],
+			[Southern Europe], [6], [8], [42.86%],
+			[Central and Eastern Europe], [4], [7], [36.36%],
+			table.hline(stroke: 1pt),
+		)
+	) <table:accent-count>
+
+	We also inspected the position of the accented syllables in those accented pronunciations (@fig:accent-position).
+	The position of the accent is defined as the index of the accented syllable (staring from 0) divided by the amount of the syllables in a pronunciation.
+
+	#figure(
+		caption: [The distribution of accent positions by culture.],
+		image("./images/accent position boxplot.png", height: 20em),
+	) <fig:accent-position>
+
+	== Consonant
+
+	For consonant and vowel realizations, we counted every way of every recognizable _graphs_ (letter sequences that work in a whole to represent a single sound) being realized and summarized all the figures into tables, with rows being the perceived cultures, and columns representing pairs of a graph and its realization.
+
+	It is only the contrast of how the same graph is pronounced across different data that we care about.
+	In consideration for statistical significance and clarity, we have filtered out the columns that have enough data points with the following criteria:
+	- There must be constrasts presented in the data, i.e. a letter sequence must be pronounced in more than one way.
+	- There must be at least two data points in the column, so that it is not an occasional noise.
+
+	After filtering, effective contrasts are observed on realization of \<k\>, \<l\> and \<p\> (@table:consonant).
+
+	#realizationTable(
+		"../Interview/analysis/consonant.csv",
+		caption: [The distribution of consonant realization.],
+	) <table:consonant>
+
+	== Vowel
+
+	Under the same filtering process, effective contrasts for vowels are observed on realization of \<a\> (@table:vowel-a), \<e\>, \<o\> and \<u\> (@table:vowel-others).
+
+	#realizationTable(
+		"../Interview/analysis/vowel.csv",
+		caption: [The distribution of realization of \<a\>.],
+		letterFilter: "a",
+	) <table:vowel-a>
+
+	#realizationTable(
+		"../Interview/analysis/vowel.csv",
+		caption: [The distribution of realization of \<e\>, \<o\> and \<u\>.],
+		letterFilter: "eou",
+	) <table:vowel-others>
+]
+
+= Discussion
+
+#[
+	//
+]
+
+= Limitation and Future Work
+
+#[
+	//
+]
+
+= Conclusion
+
+#[
+	//
 ]
 
 #bibliography("./bibliography.bib")
