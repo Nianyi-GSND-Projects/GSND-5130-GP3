@@ -253,12 +253,12 @@
 
 = Results
 
-We have done 3 rounds of interviews with random American citizens (N=23); 174 data samples were yielded.
-After inspecting and cleaning, 89 of them are effective; their strict phonological transcription were coded for later analysis.
-
-By writing and running automated data-processing scripts, we were able to extract data of three main aspects of the phonological features from the transcriptions: accent (i.e. the stressed syllables), realization of consonants and realization of vowels.
-
 #[
+	We have done 3 rounds of interviews with random American citizens (N=23); 174 data samples were yielded.
+	After inspecting and cleaning, 89 of them are effective; their strict phonological transcription were coded for later analysis.
+
+	By writing and running automated data-processing scripts, we were able to extract data of three main aspects of the phonological features from the transcriptions: accent (i.e. the stressed syllables), realization of consonants and realization of vowels.
+
 	#show table: set block(breakable: true);
 	#set table(stroke: none);
 	#show table.cell.where(y: 0): it => {
@@ -375,7 +375,23 @@ By writing and running automated data-processing scripts, we were able to extrac
 = Discussion
 
 #[
-	//
+	Our research successfully identified patterns indicating that cultural background influences English speakers' pronunciation preferences when encountering names associated with specific cultures.
+	However, there are several limitations we must address in future research.
+
+	First, as a qualitative study, our research lacks a sufficient number and diversity of participants.
+	While we collected over a large enough number of data points to analyze pronunciation patterns, this sample size is not large enough to generalize our findings to the broader community or target audience.
+
+	Second, due to the lack of tools to automatically segment name pronunciations from speech and analyze the data, all recordings had to be processed and analyzed manually.
+	This approach requires an extremely large amount of work and poses significant challenges if we aim to include a larger number of participants and datasets in future research.
+
+	Another limitation stems from the focus of our study: understanding how people’s appearance influences pronunciation by English speakers.
+	Since participants were asked to pronounce specific names, some were influenced by the cultural associations of the names themselves.
+	This introduces a confounding factor, particularly with a smaller participant pool.
+	However, with a larger sample size, this effect could be minimized due to the law of large numbers---as the number of experiments increases, the average results approach the expected value @dekking2006modern.
+	Although we cannot entirely eliminate the cultural influence of the names, the impact of this factor will diminish as the participant pool grows, allowing us to focus more accurately on differences in pronunciation patterns.
+
+	In the future, we plan to recruit a larger and more geographically diverse group of native English speakers as participants.
+	Additionally, we aim to develop an improved analysis workflow to reduce the workload associated with manually processing large datasets.
 ]
 
 = Limitation and Future Work
