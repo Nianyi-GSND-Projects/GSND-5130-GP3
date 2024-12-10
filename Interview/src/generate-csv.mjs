@@ -4,11 +4,8 @@ import { DataTable } from './data-table.mjs';
 
 const accentTable = new DataTable({
 	culture: '',
-	totalCount: 0,
-	ratio: 0,
-	accentedCount: 0,
-	positionSum: 0,
-	avgPosition: 0,
+	position: NaN,
+	isAccented: false,
 });
 const vowelTable = new DataTable({
 	culture: '',
@@ -33,7 +30,6 @@ async function Main() {
 		await ProcessResultFile(path);
 	}
 
-	PostProcessAccent();
 	PostProcessPhonemes();
 
 	WriteCsvTable(accentTable, 'accent.csv');
@@ -139,32 +135,23 @@ function ProcessAccent(result, speech) {
 	if(!merger)
 		return;
 
-	const row = AddRowToTable(accentTable, merger);
-	IncreaseOnRow(row, 'totalCount');
+	// ANCHOR
+	const row = AddRowToTable(accentTable, merger, true);
 
 	const isAccented = result.transcription.includes('\'');
 	if(isAccented) {
-		IncreaseOnRow(row, 'accentedCount');
+		row['isAccented'] = true;
 		const position = speech.syllables.findIndex(s => s.isAccented);
-		IncreaseOnRow(row, 'positionSum', position / speech.syllables.length);
+		IncreaseOnRow(row, 'position', position / speech.syllables.length);
 	}
 }
 
-function PostProcessAccent() {
-	for(const row of accentTable.rows) {
-		row.avgPosition = row.positionSum /row.accentedCount;
-		row.ratio = row.accentedCount / row.totalCount;
+function AddRowToTable(table, culture, force = false) {
+	if(!force) {
+		const existing = table.rows.find(row => row.culture === culture);
+		if(existing)
+			return existing;
 	}
-
-	accentTable.RemoveColumn('totalCount');
-	accentTable.RemoveColumn('accentedCount');
-	accentTable.RemoveColumn('positionSum');
-}
-
-function AddRowToTable(table, culture) {
-	const existing = table.rows.find(row => row.culture === culture);
-	if(existing)
-		return existing;
 	const newRow = { culture };
 	table.AddRow(newRow);
 	return newRow;
