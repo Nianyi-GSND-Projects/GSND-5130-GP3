@@ -534,8 +534,9 @@
 	Second, due to the lack of tools to automatically segment name pronunciations from speech and analyze the data, all recordings had to be processed and analyzed manually.
 	This approach requires an extremely large amount of work and poses significant challenges if we aim to include a larger number of participants and datasets in future research.
 
-	In the future, we plan to recruit a larger and more geographically diverse group of native English speakers as participants.
+	For future research, the research group should recruit a larger and more geographically diverse group of native English speakers as participants.
 	Additionally, we aim to develop an improved analysis workflow to reduce the workload associated with manually processing large datasets.
+	Developing an automated analysis program will also be necessary for handling large amounts of data efficiently.
 ]
 
 = Conclusion
