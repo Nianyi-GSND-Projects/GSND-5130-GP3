@@ -554,3 +554,29 @@
 ]
 
 #bibliography("./bibliography.bib")
+
+= Appendix
+
+#{
+	set align(center);
+	show figure: set block(breakable: true);
+	figure(
+		caption: [Collected Interview Data],
+		table(
+			columns: 4,
+			align: left,
+			table.hline(stroke: 1pt),
+			..(data => {
+				let header = data.remove(0);
+				data = data.map(row => {
+					let (pc, name, o, t) = row;
+					o = o.split("/").map(ortho).join("/");
+					t = t.split("/").map(x => phone(x, brackets: false)).join("/");
+					return (pc, name, o, t);
+				});
+				return (header, table.hline(stroke: 0.5pt), ..data);
+			})(csv("../Interview/analysis/record.csv")).flatten(),
+			table.hline(stroke: 1pt),
+		),
+	);
+}

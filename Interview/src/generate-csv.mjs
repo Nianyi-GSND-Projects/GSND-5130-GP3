@@ -13,6 +13,12 @@ const vowelTable = new DataTable({
 const consonantTable = new DataTable({
 	culture: '',
 });
+const recordTable = new DataTable({
+	perceivedCulture: '',
+	name: '',
+	orthographyDivision: '',
+	transcription: '',
+});
 
 Main().catch(err => {
 	console.error(err);
@@ -32,6 +38,7 @@ async function Main() {
 
 	PostProcessPhonemes();
 
+	WriteCsvTable(recordTable, 'record.csv');
 	WriteCsvTable(accentTable, 'accent.csv');
 	WriteCsvTable(vowelTable, 'vowel.csv');
 	WriteCsvTable(consonantTable, 'consonant.csv');
@@ -52,6 +59,7 @@ async function ProcessResultFile(resultFilePath) {
 	result.name = result.name.toLowerCase();
 	const speech = ParseResult(result);
 
+	ProcessRecord(result);
 	ProcessAccent(result, speech);
 	ProcessVowel(result, speech);
 	ProcessConsonant(result, speech);
@@ -128,6 +136,19 @@ function ParseResult(result) {
 	}
 
 	return { pairs, syllables, };
+}
+
+function ProcessRecord(result) {
+	const merger = FindCultureMerger(result.culture);
+	if(!merger)
+		return;
+
+	recordTable.AddRow({
+		perceivedCulture: merger,
+		name: (x => x[0].toUpperCase() + x.slice(1))(result.name.replaceAll('/', '')),
+		orthographyDivision: result.name,
+		transcription: result.transcription,
+	});
 }
 
 function ProcessAccent(result, speech) {
