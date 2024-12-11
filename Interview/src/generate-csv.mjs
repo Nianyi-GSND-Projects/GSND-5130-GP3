@@ -4,17 +4,20 @@ import { DataTable } from './data-table.mjs';
 
 const accentTable = new DataTable({
 	culture: '',
-	totalCount: 0,
-	ratio: 0,
-	accentedCount: 0,
-	positionSum: 0,
-	avgPosition: 0,
+	position: NaN,
+	isAccented: false,
 });
 const vowelTable = new DataTable({
 	culture: '',
 });
 const consonantTable = new DataTable({
 	culture: '',
+});
+const recordTable = new DataTable({
+	perceivedCulture: '',
+	name: '',
+	orthographyDivision: '',
+	transcription: '',
 });
 
 Main().catch(err => {
@@ -33,9 +36,9 @@ async function Main() {
 		await ProcessResultFile(path);
 	}
 
-	PostProcessAccent();
 	PostProcessPhonemes();
 
+	WriteCsvTable(recordTable, 'record.csv');
 	WriteCsvTable(accentTable, 'accent.csv');
 	WriteCsvTable(vowelTable, 'vowel.csv');
 	WriteCsvTable(consonantTable, 'consonant.csv');
@@ -56,6 +59,7 @@ async function ProcessResultFile(resultFilePath) {
 	result.name = result.name.toLowerCase();
 	const speech = ParseResult(result);
 
+	ProcessRecord(result);
 	ProcessAccent(result, speech);
 	ProcessVowel(result, speech);
 	ProcessConsonant(result, speech);
@@ -134,37 +138,41 @@ function ParseResult(result) {
 	return { pairs, syllables, };
 }
 
+function ProcessRecord(result) {
+	const merger = FindCultureMerger(result.culture);
+	if(!merger)
+		return;
+
+	recordTable.AddRow({
+		perceivedCulture: merger,
+		name: (x => x[0].toUpperCase() + x.slice(1))(result.name.replaceAll('/', '')),
+		orthographyDivision: result.name,
+		transcription: result.transcription,
+	});
+}
+
 function ProcessAccent(result, speech) {
 	const merger = FindCultureMerger(result.culture);
 	if(!merger)
 		return;
 
-	const row = AddRowToTable(accentTable, merger);
-	IncreaseOnRow(row, 'totalCount');
+	// ANCHOR
+	const row = AddRowToTable(accentTable, merger, true);
 
 	const isAccented = result.transcription.includes('\'');
 	if(isAccented) {
-		IncreaseOnRow(row, 'accentedCount');
+		row['isAccented'] = true;
 		const position = speech.syllables.findIndex(s => s.isAccented);
-		IncreaseOnRow(row, 'positionSum', position / speech.syllables.length);
+		IncreaseOnRow(row, 'position', position / speech.syllables.length);
 	}
 }
 
-function PostProcessAccent() {
-	for(const row of accentTable.rows) {
-		row.avgPosition = row.positionSum /row.accentedCount;
-		row.ratio = row.accentedCount / row.totalCount;
+function AddRowToTable(table, culture, force = false) {
+	if(!force) {
+		const existing = table.rows.find(row => row.culture === culture);
+		if(existing)
+			return existing;
 	}
-
-	accentTable.RemoveColumn('totalCount');
-	accentTable.RemoveColumn('accentedCount');
-	accentTable.RemoveColumn('positionSum');
-}
-
-function AddRowToTable(table, culture) {
-	const existing = table.rows.find(row => row.culture === culture);
-	if(existing)
-		return existing;
 	const newRow = { culture };
 	table.AddRow(newRow);
 	return newRow;
@@ -298,7 +306,7 @@ function PostProcessPhonemes() {
 				
 				for(const phonemes of phonemesList) {
 					const key = `${letters}_${phonemes}`;
-					row[key] = table.Get(key, row) / sum;
+					row[key] = table.Get(key, row);
 				}
 			}
 		}

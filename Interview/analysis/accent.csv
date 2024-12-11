@@ -1,5 +1,79 @@
-﻿culture,ratio,avgPosition
-Asia,0.2727272727272727,0.08333333333333333
-Middle East,0.2903225806451613,0.12962962962962962
-Southern Europe,0.42857142857142855,0.3055555555555555
-Central and Eastern Europe,0.36363636363636365,0.29166666666666663
+﻿culture,position,isAccented
+Asia,0,1
+Asia,NaN,
+Asia,0,1
+Middle East,NaN,
+Southern Europe,0.5,1
+Southern Europe,NaN,
+Asia,NaN,
+Middle East,NaN,
+Asia,NaN,
+Southern Europe,0.5,1
+Middle East,NaN,
+Middle East,NaN,
+Asia,0,1
+Asia,NaN,
+Asia,NaN,
+Middle East,NaN,
+Central and Eastern Europe,NaN,
+Southern Europe,NaN,
+Asia,NaN,
+Middle East,NaN,
+Asia,NaN,
+Southern Europe,NaN,
+Middle East,0.3333333333333333,1
+Middle East,NaN,
+Southern Europe,0.3333333333333333,1
+Central and Eastern Europe,NaN,
+Middle East,NaN,
+Central and Eastern Europe,NaN,
+Middle East,NaN,
+Central and Eastern Europe,0.5,1
+Asia,NaN,
+Central and Eastern Europe,NaN,
+Middle East,0,1
+Middle East,NaN,
+Southern Europe,NaN,
+Middle East,NaN,
+Central and Eastern Europe,0.3333333333333333,1
+Asia,0,1
+Middle East,0.5,1
+Southern Europe,0,1
+Southern Europe,0,1
+Middle East,0,1
+Southern Europe,0.5,1
+Asia,NaN,
+Middle East,NaN,
+Middle East,NaN,
+Asia,NaN,
+Asia,0.5,1
+Central and Eastern Europe,NaN,
+Middle East,NaN,
+Middle East,NaN,
+Middle East,NaN,
+Asia,NaN,
+Middle East,NaN,
+Asia,NaN,
+Middle East,NaN,
+Central and Eastern Europe,NaN,
+Middle East,NaN,
+Asia,0,1
+Southern Europe,NaN,
+Asia,NaN,
+Southern Europe,NaN,
+Southern Europe,NaN,
+Asia,NaN,
+Middle East,0,1
+Middle East,NaN,
+Asia,NaN,
+Middle East,0,1
+Middle East,NaN,
+Central and Eastern Europe,NaN,
+Central and Eastern Europe,0,1
+Middle East,0,1
+Southern Europe,NaN,
+Middle East,0.3333333333333333,1
+Middle East,NaN,
+Central and Eastern Europe,0.3333333333333333,1
+Middle East,0,1
+Asia,NaN,
