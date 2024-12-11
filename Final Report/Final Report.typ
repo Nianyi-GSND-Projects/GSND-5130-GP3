@@ -11,13 +11,13 @@
 }
 
 #let phone = (body, strict: true, brackets: true) => {
-	set text(font: "Consolas");
+	set text(font: "Arial");
 	let (l, r) = (() => {
-		if(brackets == false) {
+		if brackets == false {
 			return ("", "");
 		}
 		else {
-			if(strict == true) {
+			if strict == true {
 				return ("[", "]");
 			}
 			else {
@@ -28,9 +28,72 @@
 	text[#l#body#r];
 }
 
-#let ortho = (body) => {
+#let ortho = (body, brackets: false) => {
 	set text(font: "Consolas");
-	text[\<#body\>];
+	let (l, r) = (() => {
+		if brackets == false {
+			return ("", "");
+		}
+		else {
+			return ("<", ">");
+		}
+	})();
+	text[#l#body#r];
+}
+
+#let realizationTable = (data, letterFilter: none) => {
+	if type(data) == str {
+		data = csv(data);
+	}
+	data.at(0).at(0) = "Culture";
+	if(letterFilter != none) {
+		let index = ();
+		index.push(0);
+		for i in range(1, data.at(0).len()) {
+			let (letters, phones) = data.at(0).at(i).split("_");
+			if(letterFilter.contains(letters)) {
+				index.push(i);
+			}
+		}
+		for i in range(0, data.len()) {
+			let row = data.at(i);
+			for j in range(row.len() - 1, -1, step: -1) {
+				if index.contains(j) == false {
+					let p = row.remove(j);
+				}
+			}
+			data.at(i) = row;
+		}
+	}
+	show table.cell.where(y: 0): it => {
+		if it.body.func() == text and it.body.text.contains("_") == false {
+			it;
+		}
+		else {
+			let (letters, phones) = it.body.text.split("_");
+			table.cell(
+				align: horizon + center,
+				inset: (x: 0.2em),
+			)[#ortho(letters, brackets: false) #phone(phones)];
+		}
+	};
+	table(
+		columns: data.at(0).len(),
+		align: (left, ..range(1, data.at(0).len()).map(it => center)),
+
+		table.hline(stroke: 1pt),
+		..(hrow => {
+			for i in range(hrow.len() - 1, 0, step: -1) {
+				if hrow.at(i).at(0) != hrow.at(i - 1).at(0) {
+					hrow.insert(i, table.vline(stroke: 0.5pt));
+				}
+			}
+			return hrow;
+		})(data.at(0)),
+		table.hline(stroke: 0.5pt),
+		..data.slice(1).flatten(),
+		table.hline(stroke: 1pt),
+	);
 }
 
 /* Preambles */
@@ -43,6 +106,12 @@
 #show link: set text(size: 0.9em, font: "Consolas")
 #set quote(quotes: true)
 #show quote: set text(style: "italic")
+#show table: set block(breakable: true);
+#set table(stroke: none);
+#show table.cell.where(y: 0): it => {
+	set align(center);
+	text(it, weight: "bold");
+}
 
 /* Title */
 
@@ -82,7 +151,7 @@
 /* Abstract */
 
 #let abstract = (it, title: [Abstract]) => {
-	line(length: 100%, stroke: 0.5pt);
+	v(0.5em);
 
 	(body => {
 		set align(center);
@@ -95,10 +164,6 @@
 	par(it);
 
 	v(0.5em);
-
-	line(length: 100%, stroke: 0.5pt);
-
-	v(0.5em);
 }
 #abstract[
 	Accurate name pronunciation is a key element of cultural respect and inclusivity.
@@ -109,6 +174,33 @@
 	Using a gamified within-subject experimental design, participants were asked to pronounce ambiguous names paired with portraits representing different cultural backgrounds.
 	This research reveals implicit biases at the intersection of visual perception and language use, contributing to a deeper understanding of cross-cultural communication.
 ]
+
+#{
+	box(
+		width: 100%,
+		stroke: 0.5pt,
+		inset: 1em,
+	)[
+		#{
+			set text(size: 0.8em);
+			set align(center);
+			heading(
+				level: 1,
+				outlined: false,
+			)[Notation Convention];
+			v(0.5em);
+		}
+
+		- This article contains phonetical transcriptions, which are formatted with sans-serif fonts wrapped with brackets.
+			Strict transcriptions are wrapped with square brackets, like #phone[\'bɹwækʰɪt]\; loose transcriptions are wrapped wtih slashes, like #phone(strict: false)[\'brækɪt].
+
+		- Orthographies (spellings) are formatted with monospace fonts, usually without wrapping brackets, like #ortho[braket].
+			If ambiguity is encountered, angle brackets will be applied, like #ortho(brackets: true)[braket].
+
+		- Asterisks are used to present _p_ values for statistical significance:
+			\* \< 0.1, \*\* \< 0.05, \*\*\* \< 0.01.
+	]
+}
 
 = Introduction
 
@@ -259,58 +351,6 @@
 
 	By writing and running automated data-processing scripts, we were able to extract data of three main aspects of the phonological features from the transcriptions: accent (i.e. the stressed syllables), realization of consonants and realization of vowels.
 
-	#show table: set block(breakable: true);
-	#set table(stroke: none);
-	#show table.cell.where(y: 0): it => {
-		if(it.body.text.contains("_") == false) {
-			set align(center);
-			text(it, weight: "bold");
-		}
-		else {
-			let (letters, phones) = it.body.text.split("_");
-			let header = [#letters #phone(phones)];
-			block(header, width: measure(header).width);
-		}
-	}
-
-	#let realizationTable = (src, caption: [], letterFilter: none) => {
-		let data = csv(src);
-		data.at(0).at(0) = "Culture";
-		if(letterFilter != none) {
-			let index = ();
-			index.push(0);
-			for i in range(1, data.at(0).len()) {
-				let (letters, phones) = data.at(0).at(i).split("_");
-				if(letterFilter.contains(letters)) {
-					index.push(i);
-				}
-			}
-			for i in range(0, data.len()) {
-				let row = data.at(i);
-				for j in range(row.len() - 1, -1, step: -1) {
-					if(index.contains(j) == false) {
-						let p = row.remove(j);
-					}
-				}
-				data.at(i) = row;
-			}
-		}
-		figure(
-			caption: caption,
-			table(
-				columns: data.at(0).len(),
-				column-gutter: 0.25em,
-				align: (left, center),
-
-				table.hline(stroke: 1pt),
-				..data.at(0),
-				table.hline(stroke: 0.5pt),
-				..data.slice(1).flatten(),
-				table.hline(stroke: 1pt),
-			)
-		)
-	}
-
 	== Accent
 
 	For the accent aspect, we counted the amount of name pronounciations with and without an accent for each culture, and the ratio between the amounts (@table:accent-count).
@@ -348,31 +388,109 @@
 	- There must be constrasts presented in the data, i.e. a letter sequence must be pronounced in more than one way.
 	- There must be at least two data points in the column, so that it is not an occasional noise.
 
-	After filtering, effective contrasts are observed on realization of \<k\>, \<l\> and \<p\> (@table:consonant).
+	After filtering, effective contrasts are observed on realization of #ortho[k], #ortho[l] and #ortho[p] (@table:consonant).
 
-	#realizationTable(
-		"../Interview/analysis/consonant.csv",
+	#figure(
 		caption: [The distribution of consonant realization.],
+		realizationTable("../Interview/analysis/consonant.csv"),
 	) <table:consonant>
 
 	== Vowel
 
-	Under the same filtering process, effective contrasts for vowels are observed on realization of \<a\> (@table:vowel-a), \<e\>, \<o\> and \<u\> (@table:vowel-others).
+	Under the same filtering process, effective contrasts for vowels are observed on realization of #ortho[a], #ortho[e], #ortho[o] and #ortho[u] (@table:vowel).
 
-	#realizationTable(
-		"../Interview/analysis/vowel.csv",
-		caption: [The distribution of realization of \<a\>.],
-		letterFilter: "a",
-	) <table:vowel-a>
-
-	#realizationTable(
-		"../Interview/analysis/vowel.csv",
-		caption: [The distribution of realization of \<e\>, \<o\> and \<u\>.],
-		letterFilter: "eou",
-	) <table:vowel-others>
+	#[
+		// #pagebreak()
+		#set align(center)
+		#set par(justify: false)
+		#rotate(
+			0deg,
+			reflow: true,
+		)[
+			#figure(
+				caption: [The distribution of vowel realization.],
+				realizationTable("../Interview/analysis/vowel.csv"),
+			) <table:vowel>
+		]
+		// #pagebreak()
+	]
 ]
 
 = Discussion
+
+#[
+	Statistical tests were performed on each phonological feature of each culture against the same feature of all other cultures to see if there is any bias appearing.
+
+	== Accent
+
+	Two-tailed t-tests were performed on accent data.
+	The alternative hypothesis here is that the tested culture has an outstanding accented ratio or accent position.
+	The results are shown in @table:accent-results.
+
+	#figure(
+		caption: [_p_-values for accent features.],
+		table(
+			columns: 3,
+			align: (left, center, center),
+			table.hline(stroke: 1pt),
+			table.header[Culture][accented ratio][accent position],
+			table.hline(stroke: 0.5pt),
+			[Asia], [0.570], [0.197],
+			[Middle Eastern], [0.642], [0.327],
+			[Southern Europe], [0.339], [0.199],
+			[Central and Eastern Europe], [0.741], [0.335],
+			table.hline(stroke: 1pt),
+		),
+	) <table:accent-results>
+
+	All _p_-values are greater than 0.1.
+	We could then conclude that American people do not show phonological preferences on accent when reading foreign names.
+
+	== Consonant
+
+	For consonant realization, we want to know if certain phonemes are prefered/avoided for some cultures.
+	To achieve this, for every consonant graph, we scope on only that graph, and run t-test against the union set of all other cultures.
+	This way, we could know how "off" that culture's pronunciations are to the "average" pronunciations.
+	The results are shown in @table:consontant-results.
+
+	#figure(
+		caption: [Z scores for consonant realization frequency.],
+		realizationTable((
+			("Culture", "k_k", "k_kʰ", "l_l", "l_ɬ", "p_p", "p_pʰ"),
+			("Asia", "-0.153", "0.153", "-0.463", "0.463", "-0.943", "0.943"),
+			("Middle Eastern", "-0.153", "0.153", "1.234", "-1.234", "1.205", "-1.205"),
+			("Southern Europe", "-1.775*", "1.775*", "-1.629", "1.629", "-1.440", "1.440"),
+			("Central and Eastern Europe", "1.255", "-1.255", "0.762", "-0.762", "1.217", "-1.217"),
+		)),
+	) <table:consontant-results>
+
+	There is only one set of data that is statistically significant:
+	When pronouncing names of Southeastern European people, Americans tend to aspirate #ortho[k] and implement it as #phone[kʰ] (as in "Kurt") instead of #phone[k] (as in "skirt").
+
+	However, if we focus only on the aspiration of explosive consonants (#ortho[k] and #ortho[p]) and merge the corresponding columns together, we could get the following results (@table:aspiration-results):
+
+	#figure(
+		caption: [Distribution and Z scores for explosive aspiration.],
+		table(
+			columns: 4,
+			align: (left, center, center, center),
+			table.hline(stroke: 1pt),
+			table.header[Culture][Aspirated][Unaspirated][Z score],
+			table.hline(stroke: 0.5pt),
+			[Asia], [0.500], [0.500], [-0.725],
+			[Middle Eastern], [0.625], [0.375], [0.688],
+			[Southern Europe], [0.000], [1.000], [-4.715\*\*\*],
+			[Central and Eastern Europe], [1.000], [0.000], [3.799\*\*\*],
+			table.hline(stroke: 1pt),
+		),
+	) <table:aspiration-results>
+
+	We could conclude that when facing Southern European faces, Americans would avoid aspirating the explosives in their names; and when facing Central and Eastern European faces, it's the opposite case: Americans would aspirate almost every explosives.
+
+	== Vowel
+]
+
+= Limitation and Future Work
 
 #[
 	Our research successfully identified patterns indicating that cultural background influences English speakers' pronunciation preferences when encountering names associated with specific cultures.
@@ -392,12 +510,6 @@
 
 	In the future, we plan to recruit a larger and more geographically diverse group of native English speakers as participants.
 	Additionally, we aim to develop an improved analysis workflow to reduce the workload associated with manually processing large datasets.
-]
-
-= Limitation and Future Work
-
-#[
-	//
 ]
 
 = Conclusion
