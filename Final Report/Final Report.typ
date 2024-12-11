@@ -282,6 +282,11 @@
 		),
 	)
 
+	Since participants were asked to pronounce specific names, some were influenced by the cultural associations of the names themselves.
+	This introduces a confounding factor, particularly with a smaller participant pool.
+	However, with a larger sample size, this effect could be minimized due to the law of large numbers---as the number of experiments increases, the average results approach the expected value @dekking2006modern.
+	Although we cannot entirely eliminate the cultural influence of the names, the impact of this factor will diminish as the participant pool grows, allowing us to focus more accurately on differences in pronunciation patterns.
+
 	== Experiment Procedure
 
 	- Setup
@@ -443,11 +448,9 @@
 		),
 	) <table:accent-results>
 
-	All _p_-values are greater than 0.1.
-
 	=== Conclusion
 
-	- American people do not show phonological preferences on accent when reading foreign names.
+	- Since all _p_-values are greater than 0.1, American people do not show phonological preferences on accent when reading foreign names.
 
 	== Consonant
 
@@ -500,19 +503,13 @@
 
 	=== Conclusion
 
-	- _p_ \< 0.01
+	- When pronouncing Middle Eastern people's names, there is a strong tendency among Americans to realize #ortho[a] as #phone[ɐ].
 
-		- When pronouncing Middle Eastern people's names, there is a strong tendency among Americans to realize #ortho[a] as #phone[ɐ].
+	- When #ortho[a] is presented along with Central and Eastern European faces, it is more likely to be pronounced as #phone[æ], or centralized as #phone[ə].
 
-	- _p_ \< 0.05
+	- When reading names of Asian people, #ortho[a] is likely to be pronounced as #phone[ʌ], and #ortho[o] is likely to be pronounced as #phone[əʊ].
 
-		- When #ortho[a] is presented along with Central and Eastern European faces, it is more likely to be pronounced as #phone[æ], or centralized as #phone[ə].
-
-		- When reading names of Asian people, #ortho[a] is likely to be pronounced as #phone[ʌ], and #ortho[o] is likely to be pronounced as #phone[əʊ].
-
-	- _p_ \< 0.1
-
-		- The centralization of #ortho[a] is also observed on Southern European face-influenced pronunciations. It could be furtherly summarized that such tendency of centralization applies on the general European population.
+	- The centralization of #ortho[a] is also observed on Southern European face-influenced pronunciations. It could be furtherly summarized that such tendency of centralization applies on the general European population.
 
 	#{
 		set align(center);
@@ -536,12 +533,6 @@
 
 	Second, due to the lack of tools to automatically segment name pronunciations from speech and analyze the data, all recordings had to be processed and analyzed manually.
 	This approach requires an extremely large amount of work and poses significant challenges if we aim to include a larger number of participants and datasets in future research.
-
-	Another limitation stems from the focus of our study: understanding how people’s appearance influences pronunciation by English speakers.
-	Since participants were asked to pronounce specific names, some were influenced by the cultural associations of the names themselves.
-	This introduces a confounding factor, particularly with a smaller participant pool.
-	However, with a larger sample size, this effect could be minimized due to the law of large numbers---as the number of experiments increases, the average results approach the expected value @dekking2006modern.
-	Although we cannot entirely eliminate the cultural influence of the names, the impact of this factor will diminish as the participant pool grows, allowing us to focus more accurately on differences in pronunciation patterns.
 
 	In the future, we plan to recruit a larger and more geographically diverse group of native English speakers as participants.
 	Additionally, we aim to develop an improved analysis workflow to reduce the workload associated with manually processing large datasets.
