@@ -444,7 +444,10 @@
 	) <table:accent-results>
 
 	All _p_-values are greater than 0.1.
-	We could then conclude that American people do not show phonological preferences on accent when reading foreign names.
+
+	=== Conclusion
+
+	- American people do not show phonological preferences on accent when reading foreign names.
 
 	== Consonant
 
@@ -464,8 +467,7 @@
 		)),
 	) <table:consontant-results>
 
-	There is only one set of data that is statistically significant:
-	When pronouncing names of Southeastern European people, Americans tend to aspirate #ortho[k] and implement it as #phone[kʰ] (as in "Kurt") instead of #phone[k] (as in "skirt").
+	There is only one set of data that is statistically significant.
 
 	However, if we focus only on the aspiration of explosive consonants (#ortho[k] and #ortho[p]) and merge the corresponding columns together, we could get the following results (@table:aspiration-results):
 
@@ -485,9 +487,42 @@
 		),
 	) <table:aspiration-results>
 
-	We could conclude that when facing Southern European faces, Americans would avoid aspirating the explosives in their names; and when facing Central and Eastern European faces, it's the opposite case: Americans would aspirate almost every explosives.
+	=== Conclusion
+
+	- When pronouncing names of Southern European people, Americans tend to aspirate #ortho[k] and implement it as #phone[kʰ] (as in "Kurt") instead of #phone[k] (as in "skirt").
+
+	- When facing Southern European faces, Americans would avoid aspirating the explosives in their names; and when facing Central and Eastern European faces, it's the opposite case: Americans would aspirate almost every explosives.
 
 	== Vowel
+
+	The same analysis as the first step on consonants are applied on vowels.
+	The results are shown in @table:vowel-results.
+
+	=== Conclusion
+
+	- _p_ \< 0.01
+
+		- When pronouncing Middle Eastern people's names, there is a strong tendency among Americans to realize #ortho[a] as #phone[ɐ].
+
+	- _p_ \< 0.05
+
+		- When #ortho[a] is presented along with Central and Eastern European faces, it is more likely to be pronounced as #phone[æ], or centralized as #phone[ə].
+
+		- When reading names of Asian people, #ortho[a] is likely to be pronounced as #phone[ʌ], and #ortho[o] is likely to be pronounced as #phone[əʊ].
+
+	- _p_ \< 0.1
+
+		- The centralization of #ortho[a] is also observed on Southern European face-influenced pronunciations. It could be furtherly summarized that such tendency of centralization applies on the general European population.
+
+	#{
+		set align(center);
+		rotate(90deg, reflow: true)[
+			#figure(
+				caption: [Z scores for vowel realization.],
+				realizationTable("./tables/vowel results.csv"),
+			) <table:vowel-results>
+		]
+	}
 ]
 
 = Limitation and Future Work
