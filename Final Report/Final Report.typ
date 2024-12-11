@@ -494,7 +494,7 @@
 
 	- When pronouncing names of Southern European people, Americans tend to aspirate #ortho[k] and implement it as #phone[kʰ] (as in "Kurt") instead of #phone[k] (as in "skirt").
 
-	- When facing Southern European faces, Americans would avoid aspirating the explosives in their names; and when facing Central and Eastern European faces, it's the opposite case: Americans would aspirate almost every explosives.
+	- When facing Southern European faces, Americans would be less likely to aspirate the explosives in their names; and when facing Central and Eastern European faces, it's the opposite case: Americans would aspirate almost every explosives.
 
 	== Vowel
 
