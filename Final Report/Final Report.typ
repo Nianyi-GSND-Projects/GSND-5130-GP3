@@ -550,7 +550,12 @@
 = Conclusion
 
 #[
-	//
+	In a globalized world, pronouncing names correctly is a meaningful way to show respect in multicultural environments.
+	However, native speakers may pronounce names differently depending on the cultural background of the name holder.
+	By analyzing the audio dataset from our participants, we identified certain preferences among American English native speakers.
+	For instance, with Southern European names, Americans tend to avoid aspirating certain sounds, while with Central and Eastern European names, they almost universally aspirate them.
+	Future research on linguistic systems, particularly pronunciation, should focus on developing automated analysis or coding systems to enhance workflow efficiency.
+	This is especially crucial when working with large participant groups and extracting pronunciation data from speech during data collection.
 ]
 
 #bibliography("./bibliography.bib")
